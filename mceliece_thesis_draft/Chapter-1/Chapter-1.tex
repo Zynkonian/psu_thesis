@@ -3,7 +3,118 @@
 \chapter{Introduction} \label{chapter1:introduction}
 
 \section{Linear Codes}
-here we 
+
+definition of a linear code --include definition of all variables and parameters and such 
+
+what is a generator matrix
+
+what is a parity check matrix
+
+minimum distance
+
+
+
+
+
+
+\section{Cyclic Codes}
+
+definition with polynomials
+
+its gen matrix and check polynomial
+
+zeros of a cyclic code
+
+
+
+
+\section{BCH Codes}
+
+Vandermonde matrix
+
+definition with primiate elt
+
+narrow sense
+
+Berlekamps's Algorithm
+
+\section{Binary Goppa Codes}
+
+Let $\mathbb{F}_{2^m}$ be an extension of $\mathbb{F}_2$, 
+let the support, L $=(\alpha_1,...,\alpha_n)$ be a sequence of distinct elements
+of $\mathbb{F}_{2^m}$, and let $g(X)\in\mathbb{F}_{2^m}[X]$ 
+be a polynomial of degree t satisfying $g(\alpha_i)\neq0$
+for every $i$ The corresponding binary Goppa code is
+
+\[\Gamma(L,g) = \left\{ c = (c_1,\dots,c_n) \in \mathbb{F}_2^n 
+\; \middle| \; \sum_{i=1}^{n} \frac{c_i}{X-\alpha_i} \equiv 0 
+\pmod{g(X)} \right\} \]
+
+In Classic McEliece, the g(X) chosen is square-free allowing the
+Goppa code to have $d\geq2t+1$ and correct up to $t$ errors. 
+Having knowledge of L and g, allows for efficient decoding using
+Patterson's algorithm. In this algorithm, the error vector is
+determined by knowledge of the aspects of the code, its algebraic
+structure. Note: this includes knowledge of g(X) and the support, L.
+The algorithm reduces the Goppa code for the case $g(X) = x^n$ to then
+use the procedure from Berlekamp's algorithm for BCH Codes. 
+
+It is important to note that the algebraic
+structure of the code is not revealed with the public key
+in this cryptosystem, a generator matrix or parity-check matrix. 
+This is often refered to as a "cryptographic trapdoor."
+
+
+
+\section{Original Classic McEliece}
+
+Description of Classic McEliece:
+
+- \textbf{private key}: it has three elements, a [n,k] linear binary Goppa Code $C$,
+a random $k \times k$ binary invertible matrix $S$, and a random
+$n \times n$ permutation matrix $P$.
+
+- \textbf{public key}: it has one element, a $k x n$ matrix $G' = SGP$ with $G$,
+the generator matrix of the code C.
+
+- \textbf{encryption}: with a message $m$ of length $k$, take the recipient's $G$ from
+their public key and compute $c = mG$.
+Then generate some random error vector $z$ with $t$ errors. Compute $c=c'+z$
+
+- \textbf{decryption}: After recieving $c$, compute $c=c'P^{-1}$. Then, use Patterson's
+algorithm to recover $mS$. Then, finish with $m=(mS)S^{-1}$
+
+This provides security because the problem of decoding message from a 
+general linear code is an NP-hard problem. Security stems from privacy of the
+algebraic structure that produced the public key, G.
+
+\section{Bibliography for this section}
+
+Shabnam Jafarzade Mojaveri and Adel Khosravi, “The McEliece Cryptosystem After Nearly Five Decades: A Survey of Security, Cryptanalysis, and Future Directions,” Cryptology ePrint Archive, Paper 2026/1512, July 24, 2026, https://eprint.iacr.org/2026/1512.
+
+
+Nicholas J. Patterson. The algebraic decoding of Goppa codes. IEEE Transactions on
+Information Theory, 21(2):203–207, 1975.
+
+Canteaut, A., Sendrier, N. (2000). Cryptanalysis of the Original McEliece 
+Cryptosystem. In: Ohta, K., Pei, D. (eds) Advances in Cryptology — 
+ASIACRYPT’98. ASIACRYPT 1998. Lecture Notes in Computer Science, vol 1514. 
+Springer, Berlin, Heidelberg. \url{https://doi.org/10.1007/3-540-49649-1_16}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \begin{comment}
 
@@ -202,7 +313,6 @@ Check out Fig.~\ref{Ch1-figure: mechanism}!
 
 \end{comment}
 
-\section{More Declaration}
 
 \begin{comment}
 
