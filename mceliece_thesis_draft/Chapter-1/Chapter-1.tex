@@ -2,22 +2,61 @@
 
 \chapter{Introduction} \label{chapter1:introduction}
 
+\section{Post-Quantum Cryptography}
+
+Cryptography protects information from unauthorized users. This protects everything from an everyday text message to top-secret government information. For nearly fifty years, the most readily used was the Rivest–Shamir–Adleman (RSA) system. RSA’s security is contingent on the difficulty of finding the prime factors of large numbers with a classical computer. For example, the prime factors of 119 are 7 and 17. As these numbers get larger, the harder they become to factor. However, running Shor’s algorithm on a sufficiently strong quantum computer provides a way to quickly factor these larger integers, compromising the security of RSA. This motivates the problem of finding a quantum-proof cryptosystem. In 2016, the National Institute of Science and Technology (NIST) began the Post-Quantum Cryptography project, an international collaborative effort toward making new cryptosystems resilient to both quantum and classic computers. 
+
+In 1978, Robert McEliece published the first code-based public-key cryptosystem. The security of this system is derived from decoding a general linear code, which McEliece later proved to be NP-hard. For decades, it had no practical application due its large public keys. However, there is no quick quantum algorithm known for decoding random linear codes, sparking interest as a basis for a post-quantum cryptosystem. There was a submission to the NIST in 2017, and it reached the fourth round of consideration. This would never reach any fruition as it would not be considered for the official standardization by NIST with the main issue being its inefficient large key sizes. However, the International Standardization Organization standardized it in June 2026. 
+
+\section {What is Coding Theory?}
+
+The security of Classic McEliece comes from the underlying coding theory that supports it. Coding theory broadly is the field of mathematics studying how errors in information sent across a noisy channel are detected and corrected. For example, a parity check bit is a simple way of detecting errors. For a sample binary message, $101$, take the sum of the digits modulo 2.
+\[1+0+1=2 \equiv \mathbf{0}\bmod{2}\]
+Then append that output to the original message: $101\mathbf{0}$. Now, if the there was an error in the first bit of the message, the recipient would read: $\mathbf{0}010$. The new sum of the digits would be $1$, which would not allign with the parity-check bit, implying there was an error in the sending. Thus, the recipient will request the sender to resend the message. 
+
+The construction of these codes become increasingly complex to provide stronger levels of correction and detection. For the context of Classic McEliece, we will only look at binary codes like used in the example above.
+
 \section{Linear Codes}
 
-definition of a linear code --include definition of all variables and parameters and such 
+A binary linear $[n,k,d]$ code $C$ is a linear subspace of $V(n,2)$, a vector space of n-tuples with elements from $\mathbb{F}_2=\{0,1\}$, where $n$ is the code length, $k$ is the dimension of the subspace, and $d$ is the minimum distance between distinct codewords. 
 
-what is a generator matrix
+\textbf{Example 1.3.1:} A $[3,2,2]$ binary code can be defined with the following codewords:
+\[000, 110, 011, 101\]
+The generator matrix of a code, $G$, is a $k \times n$ matrix with rows that form a basis for the linear $[n,k]$ code.
 
-what is a parity check matrix
+\textbf{Example 1.3.2:} For the code in $\bold{1.3.1}$, the associated generator matrix is:
+$$\begin {bmatrix}
+1 & 1 & 0 \\
+0 & 1 & 1
+\end{bmatrix}$$
+The parity-check matrix of a code, $H$, is a $n-k \times n$ matrix satisfying $GH^T=0$.
 
-minimum distance
+\textbf{Example 1.3.3:} The associated parity-check matrix is:
+$$\begin {bmatrix}
+1 $ 1 $ 1
+\end{bmatrix}$$
 
+Linear codes can detect up to $t = \lfloor\frac{(d-1)}{2} \rfloor$ errors. Any codeword, $x$, can be modified by some error vector $e$, so the recieved vector is $y = x + e$. Any word's syndrome, s, is defined as:
+\[s = Hy^T = H(x + e)^T = Hx^T + He^T = He^T \]
+with $Hx^T = 0$ because $GH^T=0$. Using this formulation shows that the syndrome of any word is dependent on only the error vector. Then, using an efficient decoding algorithm, $e$ can be recovered, allowing the recipient to compute:
+\[x = y - e\]
 
+Most of the types of codes used in code-based cryptography are types of linear codes, which each have their own decoding algorithms that are dependent on the algbraic construction of the code. In coding theory, this allows the code to correct more errors than the a basic linear code. 
+Without knowledge of the efficient decoding algorithm, finding the error vector of a word is extremely difficult to find. In particular, McEliece proved this generic decoding problem to be NP-complete. Code-based cryptography uses this provide security.
 
-
-
+In practice, a sender takes their message and intentionally adds an error. The inteneded recipient then uses a hidden efficient decoding algorithm to undo the error. An attacker who sniffs the message has two options: find the error vector through generic decoding or find the secret algebraic structure of the code. 
 
 \section{Cyclic Codes}
+
+A linear code $C$ is cyclic if the cyclic shift of any codeword is also a codeword, i.e.
+\[a_0a_1 \cdots a_{n-1} \in C \Rightarrow a_{n-1}a_0a_1 \cdots a_{n-2} \in C\] 
+for $a_i \in \mathbb{F}_2$.
+
+\textbf{Example 1.4.1:} In actuality, the code in \textbf{Ex. 1.3.1} is cyclic:
+\[000, 110, 011, 101\]
+
+Let $\mathbb{F}_2[x]$ be the set of polynomials with coefficients from $\mathbb{F_2} 
+
 
 definition with polynomials
 
